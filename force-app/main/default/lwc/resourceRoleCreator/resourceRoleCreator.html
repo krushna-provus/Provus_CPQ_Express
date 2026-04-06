@@ -1,0 +1,73 @@
+<template>
+    <lightning-card title="Resource Roles" icon-name="standard:resource_skill">
+
+        <div class="slds-p-horizontal_medium slds-m-bottom_small">
+            <lightning-button 
+                label="Add New Resource" 
+                variant="brand"
+                onclick={handleToggle}>
+            </lightning-button>
+        </div>
+
+        <template if:true={showForm}>
+            <div class="form-container slds-p-around_medium slds-m-around_medium">
+
+                <lightning-input 
+                    label="Resource Name"
+                    value={resource.Resource_Name__c}
+                    onchange={handleChange}
+                    data-field="Resource_Name__c"
+                    required>
+                </lightning-input>
+
+                <lightning-input 
+                    type="number"
+                    label="Price"
+                    value={resource.Price__c}
+                    onchange={handleChange}
+                    data-field="Price__c">
+                </lightning-input>
+
+                <lightning-input 
+                    type="number"
+                    label="Cost"
+                    value={resource.Cost__c}
+                    onchange={handleChange}
+                    data-field="Cost__c">
+                </lightning-input>
+
+                <lightning-combobox
+                    label="Billing Unit"
+                    value={resource.Billing_Unit__c}
+                    options={billingUnits}
+                    onchange={handleChange}
+                    data-field="Billing_Unit__c">
+                </lightning-combobox>
+
+                <lightning-textarea 
+                    label="Description"
+                    value={resource.Description__c}
+                    onchange={handleChange}
+                    data-field="Description__c">
+                </lightning-textarea>
+
+                <div class="slds-m-top_medium button-group">
+                    <lightning-button 
+                        label="Save"
+                        variant="brand"
+                        onclick={handleSave}>
+                    </lightning-button>
+
+                    <lightning-button 
+                        label="Cancel"
+                        variant="neutral"
+                        onclick={handleCancel}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </div>
+
+            </div>
+        </template>
+
+    </lightning-card>
+</template>
