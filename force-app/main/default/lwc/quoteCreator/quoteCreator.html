@@ -1,0 +1,305 @@
+<template>
+    <lightning-card title="Quote Creator" icon-name="standard:quotes">
+
+        <div class="slds-p-around_medium">
+
+            <template if:false={isCreatingQuote}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-button 
+                        label="New Quote" 
+                        variant="brand" 
+                        size="large"
+                        onclick={startNewQuote}>
+                    </lightning-button>
+                </div>
+            </template>
+
+            <template if:true={isCreatingQuote}>
+
+                <div class="slds-box slds-m-bottom_medium">
+                    <h2 class="slds-text-heading_large slds-m-bottom_medium">New Quote</h2>
+
+                    <lightning-combobox
+                        label="Account"
+                        value={quote.Account__c}
+                        options={accountOptions}
+                        required
+                        onchange={handleAccountChange}>
+                    </lightning-combobox>
+
+                    <lightning-input 
+                        label="Quote Name"
+                        value={quote.Quote_Name__c}
+                        data-field="Quote_Name__c"
+                        class="slds-m-top_small"
+                        onchange={handleChange}>
+                    </lightning-input>
+
+                    <lightning-input 
+                        type="number" 
+                        label="Discount (%)"
+                        value={quote.Discount__c}
+                        data-field="Discount__c"
+                        class="slds-m-top_small"
+                        onchange={handleChange}>
+                    </lightning-input>
+                </div>
+
+                <!-- PRODUCTS SECTION -->
+                <div class="slds-box slds-m-bottom_medium slds-border_bottom">
+                    <h3 class="slds-text-heading_medium slds-m-bottom_medium">Products</h3>
+                    
+                    <template if:false={products.length}>
+                        <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_medium">No products added yet</p>
+                    </template>
+
+                    <template for:each={products} for:item="product">
+                        <div key={product.id} class="product-item slds-box slds-m-bottom_small">
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-combobox
+                                        label="Inventory"
+                                        options={productOptions}
+                                        value={product.Inventory__c}
+                                        data-id={product.id}
+                                        data-field="Inventory__c"
+                                        onchange={handleProductChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Quantity"
+                                        value={product.Quantity__c}
+                                        data-id={product.id}
+                                        data-field="Quantity__c"
+                                        onchange={handleProductChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4 slds-align_absolute-center">
+                                    <lightning-button-icon 
+                                        icon-name="utility:delete"
+                                        data-id={product.id}
+                                        onclick={removeProduct}
+                                        title="Delete product">
+                                    </lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Price"
+                                        value={product.Unit_Price__c}
+                                        data-id={product.id}
+                                        data-field="Unit_Price__c"
+                                        onchange={handleProductChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Cost"
+                                        value={product.Unit_Cost__c}
+                                        data-id={product.id}
+                                        data-field="Unit_Cost__c"
+                                        onchange={handleProductChange}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <lightning-button 
+                        label="+ Add Product"
+                        onclick={addProduct}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+
+                <!-- RESOURCES SECTION -->
+                <div class="slds-box slds-m-bottom_medium slds-border_bottom">
+                    <h3 class="slds-text-heading_medium slds-m-bottom_medium">Resources</h3>
+                    
+                    <template if:false={resources.length}>
+                        <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_medium">No resources added yet</p>
+                    </template>
+
+                    <template for:each={resources} for:item="resource">
+                        <div key={resource.id} class="resource-item slds-box slds-m-bottom_small">
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-combobox
+                                        label="Resource Role"
+                                        options={resourceOptions}
+                                        value={resource.Resource_Role__c}
+                                        data-id={resource.id}
+                                        data-field="Resource_Role__c"
+                                        onchange={handleResourceChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Quantity"
+                                        value={resource.Quantity__c}
+                                        data-id={resource.id}
+                                        data-field="Quantity__c"
+                                        onchange={handleResourceChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4 slds-align_absolute-center">
+                                    <lightning-button-icon 
+                                        icon-name="utility:delete"
+                                        data-id={resource.id}
+                                        onclick={removeResource}
+                                        title="Delete resource">
+                                    </lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Price"
+                                        value={resource.Unit_Price__c}
+                                        data-id={resource.id}
+                                        data-field="Unit_Price__c"
+                                        onchange={handleResourceChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Cost"
+                                        value={resource.Unit_Cost__c}
+                                        data-id={resource.id}
+                                        data-field="Unit_Cost__c"
+                                        onchange={handleResourceChange}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <lightning-button 
+                        label="+ Add Resource"
+                        onclick={addResource}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+
+                <!-- ADD-ONS SECTION -->
+                <div class="slds-box slds-m-bottom_medium">
+                    <h3 class="slds-text-heading_medium slds-m-bottom_medium">Add-Ons</h3>
+                    
+                    <template if:false={addOns.length}>
+                        <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_medium">No add-ons added yet</p>
+                    </template>
+
+                    <template for:each={addOns} for:item="addon">
+                        <div key={addon.id} class="addon-item slds-box slds-m-bottom_small">
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-combobox
+                                        label="Inventory"
+                                        options={addOnOptions}
+                                        value={addon.Inventory__c}
+                                        data-id={addon.id}
+                                        data-field="Inventory__c"
+                                        onchange={handleAddOnChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Quantity"
+                                        value={addon.Quantity__c}
+                                        data-id={addon.id}
+                                        data-field="Quantity__c"
+                                        onchange={handleAddOnChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4 slds-align_absolute-center">
+                                    <lightning-button-icon 
+                                        icon-name="utility:delete"
+                                        data-id={addon.id}
+                                        onclick={removeAddOn}
+                                        title="Delete add-on">
+                                    </lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Price"
+                                        value={addon.Unit_Price__c}
+                                        data-id={addon.id}
+                                        data-field="Unit_Price__c"
+                                        onchange={handleAddOnChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        type="number" 
+                                        label="Unit Cost"
+                                        value={addon.Unit_Cost__c}
+                                        data-id={addon.id}
+                                        data-field="Unit_Cost__c"
+                                        onchange={handleAddOnChange}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <lightning-button 
+                        label="+ Add Add-On"
+                        onclick={addAddOn}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+
+                <!-- SUMMARY -->
+                <div class="summary slds-box slds-m-top_medium slds-m-bottom_medium slds-theme_shade">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-3">
+                            <p class="slds-text-body_regular"><strong>Subtotal:</strong> ${subTotal}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <p class="slds-text-body_regular"><strong>Discount:</strong> {quote.Discount__c}%</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <p class="slds-text-body_regular"><strong>Total:</strong> ${total}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="slds-m-top_medium">
+                    <lightning-button 
+                        label="Save Quote"
+                        variant="brand"
+                        onclick={handleSave}
+                        class="slds-m-right_small">
+                    </lightning-button>
+
+                    <lightning-button 
+                        label="Cancel"
+                        variant="neutral"
+                        onclick={cancelQuote}>
+                    </lightning-button>
+                </div>
+
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

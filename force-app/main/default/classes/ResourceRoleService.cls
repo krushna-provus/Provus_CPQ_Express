@@ -15,7 +15,10 @@ public with sharing class ResourceRoleService {
             throw new AuraHandledException('Cost cannot be negative');
         }
 
-        // 🔹 Call DAO
         return ResourceRoleDAO.insertResourceRole(rr);
+    }
+
+    public static List<Resource_Role__c> getAllResourceRoles() {
+        return ResourceRoleDAO.getResourceRoles();
     }
 }

@@ -1,0 +1,79 @@
+<template>
+    <div class={sidebarClass}>
+
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+
+            <template if:true={isOpen}>
+                <div class="logo-section">
+                    <lightning-icon icon-name="standard:quote" size="large" class="logo-icon"></lightning-icon>
+                    <span class="logo-text">CPQ App</span>
+                </div>
+            </template>
+
+            <lightning-button-icon
+                icon-name={toggleIcon}
+                title={toggleTitle}
+                onclick={toggleSidebar}
+                class={toggleButtonClass}>
+            </lightning-button-icon>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <ul class="menu-list">
+
+                <template for:each={menuItems} for:item="menuItem">
+                    <li key={menuItem.id} class="menu-item">
+
+                        <button
+                            type="button"
+                            class={menuItem.computedClass}
+                            data-item-id={menuItem.id}
+                            onclick={handleMenuClick}
+                            title={menuItem.label}>
+
+                            <lightning-icon
+                                icon-name={menuItem.icon}
+                                size="small"
+                                class="menu-icon">
+                            </lightning-icon>
+
+                            <template if:true={isOpen}>
+                                <span class="menu-label">{menuItem.label}</span>
+                            </template>
+
+                        </button>
+
+                    </li>
+                </template>
+
+            </ul>
+        </nav>
+
+        <!-- Footer -->
+        <div class="sidebar-footer">
+
+            <button
+                type="button"
+                class={settingsItem.computedClass}
+                data-item-id={settingsItem.id}
+                onclick={handleMenuClick}
+                title={settingsItem.label}>
+
+                <lightning-icon
+                    icon-name={settingsItem.icon}
+                    size="small"
+                    class="menu-icon">
+                </lightning-icon>
+
+                <template if:true={isOpen}>
+                    <span class="menu-label">{settingsItem.label}</span>
+                </template>
+
+            </button>
+
+        </div>
+
+    </div>
+</template>

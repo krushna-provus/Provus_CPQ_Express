@@ -9,4 +9,9 @@ public with sharing class InventoryController {
     public static Id createAddOn(Inventory__c inv) {
         return InventoryService.createAddOn(inv);
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Inventory__c> getInventories() {
+        return InventoryService.getAllInventories();
+        }
 }
