@@ -1,0 +1,55 @@
+<template>
+    <lightning-card title="Products" icon-name="standard:product">
+
+        <!-- Button -->
+        <div class="slds-p-horizontal_medium slds-m-bottom_small">
+            <lightning-button 
+                label="Add Product" 
+                variant="brand"
+                onclick={handleToggle}>
+            </lightning-button>
+        </div>
+
+        <!-- Form -->
+        <template if:true={showForm}>
+            <div class="form-container slds-p-around_medium slds-m-around_medium">
+
+                <lightning-input label="Product Name"
+                    value={inventory.Inventory_Name__c}
+                    data-field="Inventory_Name__c"
+                    onchange={handleChange}>
+                </lightning-input>
+
+                <lightning-input type="number" label="Price"
+                    value={inventory.Price__c}
+                    data-field="Price__c"
+                    onchange={handleChange}>
+                </lightning-input>
+
+                <lightning-input type="number" label="Cost"
+                    value={inventory.Cost__c}
+                    data-field="Cost__c"
+                    onchange={handleChange}>
+                </lightning-input>
+
+                <lightning-textarea label="Description"
+                    value={inventory.Description__c}
+                    data-field="Description__c"
+                    onchange={handleChange}>
+                </lightning-textarea>
+
+                <!-- Buttons -->
+                <div class="button-group slds-m-top_medium">
+                    <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+
+                    <lightning-button label="Cancel" variant="neutral"
+                        class="slds-m-left_small"
+                        onclick={handleCancel}>
+                    </lightning-button>
+                </div>
+
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

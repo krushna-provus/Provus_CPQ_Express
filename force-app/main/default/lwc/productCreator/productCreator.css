@@ -1,0 +1,9 @@
+.form-container {
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+}
