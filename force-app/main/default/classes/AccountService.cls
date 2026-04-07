@@ -8,4 +8,8 @@ public with sharing class AccountService {
 
         return AccountDAO.insertAccount(acc);
     }
+
+    public static List<Account> getAllAccounts() {
+        return AccountDAO.getAccounts();
+    }
 }

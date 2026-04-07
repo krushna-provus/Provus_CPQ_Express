@@ -32,4 +32,8 @@ public with sharing class InventoryService {
             throw new AuraHandledException('Cost cannot be negative');
         }
     }
+
+    public static List<Inventory__c> getAllInventories() {
+        return InventoryDAO.getInventories();
+    }
 }
