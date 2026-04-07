@@ -9,8 +9,3 @@
     justify-content: flex-end;
 }
 
-lightning-input,
-lightning-combobox,
-lightning-textarea {
-    margin-bottom: 12px;
-}

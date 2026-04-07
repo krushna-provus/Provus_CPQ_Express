@@ -56,12 +56,11 @@ export default class AccountCreator extends LightningElement {
         this.account[field] = event.target.value;
     }
 
-    // 🔥 Save with full error handling
     handleSave() {
 
         // Frontend validation
-        if (!this.account.Name || !this.account.AccountNumber) {
-            this.showToast('Error', 'Name and Account Number are required', 'error');
+        if (!this.account.Name ) {
+            this.showToast('Error', 'Name is required', 'error');
             return;
         }
 
@@ -84,7 +83,6 @@ export default class AccountCreator extends LightningElement {
         };
     }
 
-    // 🔥 Robust Error Handler
     handleError(error) {
         let message = 'Unknown error';
 
